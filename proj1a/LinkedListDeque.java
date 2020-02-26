@@ -1,55 +1,60 @@
-public class LinkedListDeque<T>{
-    private class DLNode{
-        public DLNode prev;
-        public T item;
-        public DLNode next;
+public class LinkedListDeque<T> {
+    private class DLNode {
+        private DLNode prev;
+        private T item;
+        private DLNode next;
 
-        public DLNode(DLNode p, T i, DLNode n){
+        public DLNode(DLNode p, T i, DLNode n) {
             prev = p;
             item = i;
             next = n;
         }
     }
 
-    public int size;
+    private int size;
     private DLNode sentinel;
 
-    public LinkedListDeque(){
+    public LinkedListDeque() {
         size = 0;
         sentinel = new DLNode(null, null, null);
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
     }
 
-    public void addFirst(T i){
+    public void addFirst(T i) {
         size = size + 1;
-        sentinel.next = new DLNode(sentinel, i, sentinel.next);
+        DLNode p = new DLNode(sentinel, i, sentinel.next);
+        sentinel.next.prev = p;
+        sentinel.next = p;
+
     }
 
-    public void addLast(T i){
+    public void addLast(T i) {
         size = size + 1;
-        sentinel.prev = new DLNode(sentinel.prev, i, sentinel);
+        DLNode p = new DLNode(sentinel.prev, i, sentinel);
+        sentinel.prev.next = p;
+        sentinel.prev = p;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size == 0;
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
-    public void printDeque(){
+    public void printDeque() {
         DLNode p = sentinel.next;
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             System.out.print(p.item + " ");
             p = p.next;
         }
         System.out.println();
     }
 
-    public T removeFirst(){
-        if (isEmpty()){
+    public T removeFirst() {
+        if (isEmpty()) {
             return null;
         }
         T firstItem = sentinel.next.item;
@@ -59,8 +64,8 @@ public class LinkedListDeque<T>{
         return firstItem;
     }
 
-    public T removeLast(){
-        if (isEmpty()){
+    public T removeLast() {
+        if (isEmpty()) {
             return null;
         }
         T lastItem = sentinel.prev.item;
@@ -70,22 +75,21 @@ public class LinkedListDeque<T>{
         return lastItem;
     }
 
-    public T get(int index){
-        if (index >= size){
+    public T get(int index) {
+        if (index >= size) {
             return null;
         }
         DLNode p = sentinel.next;
         int i = 0;
-        while (i != index){
+        while (i != index) {
             p = p.next;
             i++;
         }
         return p.item;
     }
 
-    /* Not sure how to write it.*/
-    // TODO have a good solution
-    public T getRecursive(int index){
+    //help from Jerome
+    public T getRecursive(int index) {
         if (index >= size){
             return null;
         }
@@ -94,24 +98,39 @@ public class LinkedListDeque<T>{
         return getRecursive(index, p);
     }
 
-    private T getRecursive(int index, DLNode root){
-        if (root == null) return null;
-        if (index == 0) return root.item;
+    private T getRecursive(int index, DLNode root) {
+        if (root == null) {
+            return null;
+        }
+        if (index == 0) {
+            return root.item;
+        }
         return getRecursive(index - 1, root.next);
     }
 
-    public LinkedListDeque(LinkedListDeque<T> other){
+    public LinkedListDeque(LinkedListDeque<T> other) {
         size = 0;
         sentinel = new DLNode(null, null, null);
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
 
-        for (int i = 0; i < other.size(); i++){
+        for (int i = 0; i < other.size(); i++) {
             addLast(other.get(i));
         }
     }
 
-
+    /*Test
+    public static void main(String[] arg) {
+        LinkedListDeque<Integer> L = new LinkedListDeque<>();
+        L.addFirst(1);
+        L.addFirst(2);
+        L.addFirst(3);
+        //L.removeLast();
+        System.out.println(L.removeFirst());
+        L.printDeque();
+    }
+     */
 }
+
 
 
