@@ -32,10 +32,14 @@ public class TestPlip {
 
     @Test
     public void testReplicate() {
-        // TODO
+        Plip original = new Plip(2);
+        Plip replicate = original.replicate();
+        assertNotEquals(replicate, original);
+        assertEquals(replicate.energy(), original.energy(), 0);
+
     }
 
-    //@Test
+    @Test
     public void testChoose() {
 
         // No empty adjacent spaces; stay.
@@ -50,6 +54,8 @@ public class TestPlip {
         Action expected = new Action(Action.ActionType.STAY);
 
         assertEquals(expected, actual);
+
+
 
 
         // Energy >= 1; replicate towards an empty space.
