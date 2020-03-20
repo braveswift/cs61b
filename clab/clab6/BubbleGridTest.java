@@ -7,9 +7,10 @@ public class BubbleGridTest {
     public void testBasic() {
 
         int[][] grid = {{1, 0, 0, 0},
-                        {1, 1, 1, 0}};
-        int[][] darts = {{1, 0}};
-        int[] expected = {2};
+                        {1, 1, 1, 0},
+                        {1, 1, 1, 1}};
+        int[][] darts = {{0, 1}};
+        int[] expected = {0};
 
         validate(grid, darts, expected);
     }
