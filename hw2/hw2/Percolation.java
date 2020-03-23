@@ -43,13 +43,13 @@ public class Percolation {
         for (int[] dir : dirs) {
             int r = row + dir[0];
             int c = col + dir[1];
-            if (r >= 0 && r < grid.length && c >=0 && c < grid[0].length && grid[r][c] == 1) {
+            if (r >= 0 && r < grid.length && c >= 0 && c < grid[0].length && grid[r][c] == 1) {
                 uf.union(rcTo1D(row, col), rcTo1D(r, c));
             }
         }
     }
 
-    private int rcTo1D (int row, int col) {
+    private int rcTo1D(int row, int col) {
         return row * grid[0].length + col + 1;
     }
 
@@ -75,7 +75,7 @@ public class Percolation {
         return ufWithTB.connected(0, grid.length * grid.length + 1);
     }
 
-    public static void main(String[] arg){
+    public static void main(String[] arg) {
 
     }
 

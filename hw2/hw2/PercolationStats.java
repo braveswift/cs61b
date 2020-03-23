@@ -7,6 +7,10 @@ public class PercolationStats {
     private int totalTime;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0) {
+            throw new IllegalArgumentException();
+        }
+
         totalTime = T;
         fractions = new double[T];
         for (int i = 0; i < T; i++) {
@@ -16,7 +20,7 @@ public class PercolationStats {
                 int col = StdRandom.uniform(0, N);
                 perco.open(row, col);
             }
-            double fraction = perco.numberOfOpenSites() / (double) N * N;
+            double fraction = perco.numberOfOpenSites() / (double) (N * N);
             fractions[i] = fraction;
         }
     }
@@ -26,7 +30,7 @@ public class PercolationStats {
         return  StdStats.mean(fractions);
     }
 
-    public  double stddev(){
+    public  double stddev() {
         return StdStats.stddev(fractions);
     }
 
@@ -38,8 +42,4 @@ public class PercolationStats {
         return mean() + 1.96 * stddev() / Math.sqrt(totalTime);
     }
 
-    public static void main(String[] arg){
-
-
-    }
 }
