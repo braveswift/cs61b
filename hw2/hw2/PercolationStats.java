@@ -7,7 +7,7 @@ public class PercolationStats {
     private int totalTime;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
-        if (N <= 0 || T <=0 ) {
+        if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException();
         }
 
