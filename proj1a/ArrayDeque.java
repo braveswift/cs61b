@@ -16,14 +16,14 @@ public class ArrayDeque<T> {
     }
 
     private int addOne(int index) {
-        if (index == items.length - 1){
+        if (index == items.length - 1) {
             return 0;
         }
         return index + 1;
     }
 
     private int minusOne(int index) {
-        if (index  == 0){
+        if (index  == 0) {
             return items.length - 1;
         }
         return index - 1;
@@ -89,7 +89,8 @@ public class ArrayDeque<T> {
             return null;
         }
 
-        if ((double) (size - 1) / items.length < 0.25 && items.length >= 16) {
+        if ((double) (size - 1) / items.length < 0.25
+                && items.length >= 16) {
             resize(items.length / 2);
         }
 
@@ -130,7 +131,7 @@ public class ArrayDeque<T> {
     public ArrayDeque(ArrayDeque<T> other) {
         T[] orderArr = other.fromFirstToLast();
         T[] copyArr = (T[]) new Object[other.items.length];
-        System.arraycopy(orderArr, 0 , copyArr, 0, other.size);
+        System.arraycopy(orderArr, 0, copyArr, 0, other.size);
         size = other.size;
         items = copyArr;
         nextFirst = items.length - 1;
@@ -138,7 +139,7 @@ public class ArrayDeque<T> {
     }
 
     /* Test.
-    public static void main(String arg[]) {
+    {
         ArrayDeque<Integer> L = new ArrayDeque<>();
         L.addFirst(3);
         L.addLast(4);
