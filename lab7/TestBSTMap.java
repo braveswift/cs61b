@@ -40,6 +40,7 @@ public class TestBSTMap {
     	BSTMap<String, Integer> b = new BSTMap<String, Integer>();
         assertFalse(b.containsKey("waterYouDoingHere"));
         b.put("waterYouDoingHere", 0);
+
         assertTrue(b.containsKey("waterYouDoingHere"));
     }
 
