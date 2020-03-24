@@ -66,6 +66,12 @@ public class BST<Key extends Comparable<Key>> {
         return getRandomNode(root).key;
     }
 
+    public double averageDepth() {
+        return (double) totalDepth(root) / size();
+    }
+
+
+
 
     /** Private methods and variables follow. There's no need to read
      *  any of this.
@@ -83,6 +89,18 @@ public class BST<Key extends Comparable<Key>> {
             this.size = size;
         }
     }
+
+    private int totalDepth(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        if (node.left == null & node.right == null) {
+            return 0;
+        }
+        return totalDepth(node.left) + totalDepth(node.right) + size(node.left) + size(node.right);
+    }
+
+
 
     /* Returns a tree with key deleted from the tree rooted at x. */
     private Node deleteTakingSuccessor(Node x, Key key) {
