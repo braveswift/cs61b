@@ -3,7 +3,7 @@ package bearmaps;
 import java.util.LinkedList;
 import java.util.List;
 
-public class KDTree implements PointSet{
+public class KDTree implements PointSet {
     private Node root;
 
     private class Node {
@@ -84,7 +84,7 @@ public class KDTree implements PointSet{
         if (isHorizontal) {
             bestBadPoint = new Point(n.point.getX(), goal.getY());
         } else {
-          bestBadPoint = new Point(goal.getX(), n.point.getY());
+            bestBadPoint = new Point(goal.getX(), n.point.getY());
         }
         return bestBadPoint;
     }

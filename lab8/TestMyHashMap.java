@@ -1,7 +1,7 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
-import java.util.HashSet;
-import java.util.Set;
+
+import java.util.*;
 
 /** Tests by Brendan Hu, Spring 2015, revised for 2016 by Josh Hug */
 public class TestMyHashMap {
@@ -21,6 +21,14 @@ public class TestMyHashMap {
     //assumes put/size/containsKey/get work
     @Test
     public void sanityClearTest() {
+        Queue<Integer> q = new LinkedList<>();
+        Queue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
+
+
+        Stack<Integer> s = new Stack<>();
+
+
         MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
         for (int i = 0; i < 455; i++) {
             b.put("hi" + i, 1);

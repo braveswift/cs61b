@@ -46,7 +46,7 @@ public class KDTreeTest {
         Stopwatch sw1 = new Stopwatch();
         KDTree kd = new KDTree(pointsList);
         for (Point point : goalPointsList) {
-           kd.nearest(point.getX(), point.getY());
+            kd.nearest(point.getX(), point.getY());
         }
         System.out.println("Total time elapsed for KDTree: " + sw1.elapsedTime() +  " seconds.");
 

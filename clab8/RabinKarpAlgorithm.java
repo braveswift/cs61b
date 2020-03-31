@@ -29,5 +29,4 @@ public class RabinKarpAlgorithm {
         }
         return hash % RollingString.PRIMEBASE;
     }
-
 }
