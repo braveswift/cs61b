@@ -3,7 +3,6 @@ package bearmaps;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
-import java.util.PriorityQueue;
 
 public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     private int size;
