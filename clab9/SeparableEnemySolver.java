@@ -22,9 +22,62 @@ public class SeparableEnemySolver {
     /**
      * Returns true if input is separable, false otherwise.
      */
+    // BFS
     public boolean isSeparable() {
-        // TODO: Fix me
-        return false;
+        HashMap<String, Integer> team = new HashMap<>();
+        for (String person : g.labels()) {
+            team.put(person, 0);
+        }
+
+        for (String person : g.labels()) {
+            if (team.get(person) != 0) {
+                continue;
+            }
+
+            Queue<String> fringe = new LinkedList<>();
+            fringe.offer(person);
+            team.put(person, 1);
+
+            while (!fringe.isEmpty()) {
+                String curr = fringe.poll();
+                for (String neighbor : g.neighbors(curr)) {
+                    if (team.get(neighbor).equals(team.get(curr))) return false;
+                    if (team.get(neighbor) == 0) {
+                        team.put(neighbor, - team.get(curr));
+                        fringe.offer(neighbor);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    // DFS
+    public boolean isSeparableDfs() {
+        HashMap<String, Integer> team = new HashMap<>();
+        for (String person : g.labels()) {
+            team.put(person, 0);
+        }
+
+        for (String person : g.labels()) {
+            if (team.get(person) == 0 && !isValidTeam(person, team, 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isValidTeam(String person, HashMap<String, Integer> team, int teamNum) {
+        if (team.get(person) != 0) {
+            return (team.get(person).equals(teamNum));
+        }
+        team.put(person, teamNum);
+        for (String neighbor : g.neighbors(person)) {
+            if (!isValidTeam(neighbor, team, -teamNum)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
