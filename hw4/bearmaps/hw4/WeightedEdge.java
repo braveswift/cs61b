@@ -4,20 +4,20 @@ package bearmaps.hw4;
  * Utility class that represents a weighted edge.
  * Created by hug.
  */
-public class WeightedEdge<Vertex> {
-    private Vertex v;
-    private Vertex w;
+public class WeightedEdge<T> {
+    private T v;
+    private T w;
     private double weight;
 
-    public WeightedEdge(Vertex v, Vertex w, double weight) {
+    public WeightedEdge(T v, T w, double weight) {
         this.v = v;
         this.w = w;
         this.weight = weight;
     }
-    public Vertex from() {
+    public T from() {
         return v;
     }
-    public Vertex to() {
+    public T to() {
         return w;
     }
     public double weight() {
