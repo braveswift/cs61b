@@ -42,8 +42,14 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+        Queue<Queue<Item>> returnQ = new Queue<>();
+        while (!items.isEmpty()) {
+            Item curr = items.dequeue();
+            Queue<Item> newQ = new Queue<>();
+            newQ.enqueue(curr);
+            returnQ.enqueue(newQ);
+        }
+        return returnQ;
     }
 
     /**
@@ -61,8 +67,12 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+        Queue<Item> resultQ = new Queue<>();
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            Item minItem = getMin(q1, q2);
+            resultQ.enqueue(minItem);
+        }
+        return resultQ;
     }
 
     /**
@@ -77,7 +87,32 @@ public class MergeSort {
      */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        Queue<Item> cItems = new Queue<>();
+        for (Item item : items) {
+            cItems.enqueue(item);
+        }
+        Queue<Queue<Item>> singleItemsQ = makeSingleItemQueues(cItems);
+        return mergeSortHelper(singleItemsQ);
+    }
+
+
+
+    private static <Item extends Comparable> Queue<Item> mergeSortHelper(
+            Queue<Queue<Item>> items) {
+        if (items.size() == 1) {
+            return items.dequeue();
+        }
+
+        Queue<Queue<Item>> leftItems = new Queue<>();
+        int halfSize  = items.size() / 2;
+        while (halfSize > 0) {
+            leftItems.enqueue(items.dequeue());
+            halfSize -= 1;
+        }
+        Queue<Queue<Item>> rightItems = items;
+
+        Queue<Item> sortLeft = mergeSortHelper(leftItems);
+        Queue<Item> sortRight = mergeSortHelper(rightItems);
+        return mergeSortedQueues(sortLeft, sortRight);
     }
 }
