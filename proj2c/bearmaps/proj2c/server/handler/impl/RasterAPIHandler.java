@@ -84,13 +84,101 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
-        //System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        //System.out.println(requestParams);
+        System.out.println("yo, wanna know the parameters given by the web browser? They are:");
+        System.out.println(requestParams);
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
-                + "your browser.");
+        //System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
+                //+ "your browser.");
+
+        boolean query_success = true;
+        double w = requestParams.get("w");
+        double ullon = requestParams.get("ullon");
+        double lrlon = requestParams.get("lrlon");
+        double ullat = requestParams.get("ullat");
+        double lrlat = requestParams.get("lrlat");
+
+        if (ullon > Constants.ROOT_LRLON || lrlon < Constants.ROOT_ULLON || ullat < Constants.ROOT_LRLAT ||
+                lrlat > Constants.ROOT_ULLAT || ullon > lrlon || ullat < lrlat) {
+            query_success = false;
+            results.put("render_grid", null);
+            results.put("raster_ul_lon", null);
+            results.put("raster_ul_lat", null);
+            results.put("raster_lr_lon", null);
+            results.put("raster_lr_lat", null);
+            results.put("depth", null);
+            results.put("query_success",query_success);
+            return results;
+        }
+
+
+        double requestResolution = requestResolute(lrlon, ullon, w);
+        int d = depth(requestResolution);
+        double wOfPerT = (Constants.ROOT_LRLON - Constants.ROOT_ULLON) / Math.pow(2, d);
+        double hOfPerT = (Constants.ROOT_ULLAT - Constants.ROOT_LRLAT) / Math.pow(2, d);
+
+
+        int lx = (int) Math.floor ((ullon - Constants.ROOT_ULLON) / wOfPerT);
+        int rx = (int) Math.floor ((lrlon - Constants.ROOT_ULLON) / wOfPerT);
+        int uy = (int) Math.floor ((Constants.ROOT_ULLAT - ullat) / hOfPerT);
+        int dy = (int) Math.floor ((Constants.ROOT_ULLAT - lrlat) / hOfPerT);
+        String[][] grid = imgGrid(lx, rx, uy, dy, d);
+
+        double raster_ul_lon = Constants.ROOT_ULLON + lx * wOfPerT;
+        double raster_ul_lat = Constants.ROOT_ULLAT - uy * hOfPerT;
+        double raster_lr_lon = Constants.ROOT_ULLON + (rx + 1) * wOfPerT;
+        double raster_lr_lat = Constants.ROOT_ULLAT - (dy + 1)* hOfPerT;
+
+        results.put("render_grid", grid);
+        results.put("raster_ul_lon", raster_ul_lon);
+        results.put("raster_ul_lat", raster_ul_lat);
+        results.put("raster_lr_lon", raster_lr_lon);
+        results.put("raster_lr_lat", raster_lr_lat);
+        results.put("depth", d);
+        results.put("query_success",query_success);
         return results;
     }
+
+    private double requestResolute(double lrlon, double ullon, double w) {
+        double resolution = (lrlon - ullon) / w;
+        return resolution;
+    }
+
+    private int depth(double resolution) {
+        double d0Res = (Constants.ROOT_LRLON - Constants.ROOT_ULLON) / Constants.TILE_SIZE;
+        double currRes = d0Res;
+        int d = 0;
+        while (currRes > resolution && d < 7) {
+            currRes = currRes / 2;
+            d += 1;
+        }
+        if (d >= 7) {
+            d = 7;
+        }
+        return d;
+    }
+
+    private String[][] imgGrid(int lx, int rx, int uy, int dy, int d) {
+        if (lx < 0) lx = 0;
+        if (rx > Math.pow(2, d) - 1) rx = (int) (Math.pow(2, d) - 1);
+        if (uy < 0) uy = 0;
+        if (dy > Math.pow(2, d) - 1) dy = (int) (Math.pow(2, d) - 1);
+
+        int row = dy - uy + 1;
+        int col = rx - lx + 1;
+        String[][] grid = new String[row][col];
+
+        for (int y = uy, i = 0; y <= dy; y++, i++) {
+            for (int x = lx, j = 0; x <= rx; x++, j++) {
+                String img = "d" + d + "_x" + x + "_y" + y + ".png";
+                grid[i][j] = img;
+            }
+        }
+        return grid;
+    }
+
+
+
+
 
     @Override
     protected Object buildJsonResponse(Map<String, Object> result) {
