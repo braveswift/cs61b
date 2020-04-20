@@ -190,4 +190,14 @@ public class TETile implements Serializable {
 
         return copy;
     }
+
+    public String toString() {
+        return description;
+    }
+
+    public boolean equals(Object o) {
+        TETile other = (TETile) o;
+        return this.toString().equals(other.toString());
+    }
+
 }
